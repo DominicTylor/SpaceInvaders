@@ -20,7 +20,7 @@ module.exports = {
         filename: 'build.js',
     },
 
-    //watch: NODE_ENV === 'development',
+    //watch: prod,
 
     devtools: prod ? null : 'cheap-inline-module-source-map',
 

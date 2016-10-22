@@ -3,8 +3,29 @@
  */
 'use strict';
 
-import './style.less';
+// общие стили и normalize
+import './components/base/style.less';
 
-import welcome from './welcome/welcome.js';
+// экран
+import './components/screen/style.less';
+import Screen from './components/screen/script.js';
 
-welcome('world');
+// управление
+import './components/controls/style.less';
+import Controls from './components/controls/script.js';
+
+// непосредственно жогово
+window.onload = function () {
+    // имена для событий
+    let eventsName = {
+        start: 'start',
+        left: 'left',
+        right: 'right',
+    },
+        screen = new Screen;
+
+    new Controls({
+        screen: screen.screen,
+        events: eventsName,
+    });
+};
