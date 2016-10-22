@@ -3,6 +3,8 @@
  */
 'use strict';
 
+import './style.less';
+
 import welcome from './welcome/welcome.js';
 
 welcome('world');

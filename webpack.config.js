@@ -5,15 +5,21 @@
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
-    entry: __dirname + '/app/main.js',
+    context: path.resolve(__dirname, 'app'),
+
+    entry: {
+        main: './main.js',
+    },
+
     output: {
-        path: __dirname + '/',
+        path: path.resolve(__dirname),
         filename: 'build.js',
     },
 
-    watch: NODE_ENV === 'development',
+    //watch: NODE_ENV === 'development',
 
     devtools: NODE_ENV === 'development' ? 'cheap-inline-module-source-map' : null,
 
@@ -28,6 +34,10 @@ module.exports = {
                 query: {
                     presets: ['es2015']
                 }
+            },
+            {
+                test: /\.less$/,
+                loader: "style!css!less?resolve url"
             },
         ],
     },
