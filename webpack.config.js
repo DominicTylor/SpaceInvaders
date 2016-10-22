@@ -3,7 +3,7 @@
  */
 'use strict';
 
-const NODE_ENV = process.env.NODE_ENV || 'development';
+const prod = process.argv.indexOf('-p') !== -1;
 const webpack = require('webpack');
 const path = require('path');
 
@@ -16,14 +16,17 @@ module.exports = {
 
     output: {
         path: path.resolve(__dirname),
+        publicPath: '/',
         filename: 'build.js',
     },
 
     //watch: NODE_ENV === 'development',
 
-    devtools: NODE_ENV === 'development' ? 'cheap-inline-module-source-map' : null,
+    devtools: prod ? null : 'cheap-inline-module-source-map',
 
-    plugins: [],
+    plugins: [
+        new webpack.NoErrorsPlugin(),
+    ],
 
     module: {
         loaders: [
@@ -37,13 +40,13 @@ module.exports = {
             },
             {
                 test: /\.less$/,
-                loader: "style!css!less?resolve url"
+                loader: "style!css!less"
             },
         ],
     },
 };
 
-if (NODE_ENV === 'production') {
+if (prod) {
     module.exports.plugins.push(
         new webpack.optimize.UglifyJsPlugin({
             compress: {

@@ -1,7 +1,11 @@
 {
-  "name": "Space Inviders",
+  "name": "Space_Inviders",
   "version": "0.0.1",
   "author": "Vladimir Panov",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack -p"
+  },
   "devDependencies": {
     "babel-core": "^6.17.0",
     "babel-loader": "^6.2.5",
@@ -11,6 +15,8 @@
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "style-loader": "^0.13.1",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.2",
+    "normalize.less": "^1.0.0"
   }
 }
