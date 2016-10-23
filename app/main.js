@@ -12,9 +12,12 @@ import Screen from './components/screen/script.js';
 // управление
 import Controls from './components/controls/script.js';
 
+// управление
+import Draw from './components/draw/script.js';
+
 // непосредственно жогово
 window.onload = function () {
     let screen   = new Screen,
         controls = new Controls(),
-        draw     = new Draw(screen.context);
+        draw     = new Draw(screen);
 };
