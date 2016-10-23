@@ -21,7 +21,7 @@ export default class Controls {
 
     isDown (code) {
         return this.down[code];
-    }
+    };
 
     isPressed (code) {
         if (this.pressed[code]) {
@@ -30,5 +30,5 @@ export default class Controls {
             return this.pressed[code] = true;
         }
         return false;
-    }
+    };
 }

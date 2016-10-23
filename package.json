@@ -4,6 +4,7 @@
   "author": "Vladimir Panov",
   "scripts": {
     "start": "webpack-dev-server",
+    "dev": "webpack",
     "build": "webpack -p"
   },
   "devDependencies": {

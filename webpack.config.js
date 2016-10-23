@@ -20,7 +20,7 @@ module.exports = {
         filename: 'build.js',
     },
 
-    //watch: prod,
+    watch: !prod,
 
     devtools: prod ? null : 'cheap-inline-module-source-map',
 
