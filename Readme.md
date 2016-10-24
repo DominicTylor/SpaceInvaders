@@ -3,6 +3,8 @@
 [посмотреть на хостинге](https://project.someonedev.ru/spaceInviders/)
 
 Space Inviders на js.  
+Стрелять - пробел, двигаться стрелки влево-вправо.
+
 Less, ES6, сборка webpack.  
 
 npm run start - dev с live reload,  
