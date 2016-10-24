@@ -92,7 +92,7 @@ export default class Draw {
             let b = this.bullets[i];
             this.updateBullet(b);
 
-            if (b.y + b.height < 0) {
+            if (b.y + b.height < 0 || b.y > this.scale/this.screen.aspectRatio) {
                 this.bullets.splice(i, 1);
                 i--;
                 len--;
@@ -114,15 +114,15 @@ export default class Draw {
                     // при уменьшении их количества
                     switch (len2) {
                         case 40: {
-                            this.lvFrame = 44;
+                            this.lvFrame = 40;
                             break;
                         }
                         case 30: {
-                            this.lvFrame = 30;
+                            this.lvFrame = 28;
                             break;
                         }
                         case 20: {
-                            this.lvFrame = 24;
+                            this.lvFrame = 20;
                             break;
                         }
                         case 10: {
@@ -140,6 +140,21 @@ export default class Draw {
                     }
                 }
             }
+        }
+
+        // добавляем выстрелы пришельцов
+        if (Math.random() < 0.03 && this.aliens.length > 0) {
+            // выбираем произвольного пришельца
+            let a = this.aliens[Math.round(Math.random() * (this.aliens.length - 1))];
+            // проверяем чтоб выстрелы были только из первой линиии
+            // пробегаем по всему массиву и если есть совпадение по
+            // одной линии уходим на пришельца вниз
+            this.aliens.forEach((item) => {
+                if (this.AABBIntersect(a.x, a.y, a.w, 100, item.x, item.y, item.w, item.h)) {
+                    a = item;
+                }
+            });
+            this.bullets.push(this.initBullet(a.x + a.w*0.5, a.y + a.h, 3, 2, 4, "#fff"));
         }
 
         // движения пришельцев
