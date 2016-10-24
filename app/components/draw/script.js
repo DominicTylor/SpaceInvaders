@@ -13,12 +13,26 @@ export default class Draw {
 
     // функция для отрисовки объекта
     drawSprite (sp, x, y) {
-        x = this.screen.width/(this.gameObjects.scale/x);
-        y = this.screen.height/(this.gameObjects.scale/this.screen.aspectRatio/y);
-        let w = this.screen.width/(this.gameObjects.scale/sp.w),
-            h = this.screen.height/((this.gameObjects.scale/this.screen.aspectRatio)/sp.h);
-        this.context.drawImage(this.gameObjects.sprite.spriteImg, sp.x, sp.y, sp.w, sp.h, x, y, w, h);
+        let item = this.scaleCoordinates(x, y, sp.w, sp.h);
+        this.context.drawImage(this.gameObjects.sprite.spriteImg, sp.x, sp.y, sp.w, sp.h, item.x, item.y, item.w, item.h);
     };
+
+    // функция для отрисовки пульки
+    drawBullet (bullet) {
+        this.context.fillStyle = bullet.color;
+        let item = this.scaleCoordinates(bullet.x, bullet.y, bullet.width, bullet.height);
+        this.context.fillRect(item.x, item.y, item.w, item.h);
+    }
+
+    // фукнкция пересчёта координат для текущего размера
+    scaleCoordinates (x, y, w, h) {
+        return {
+            x: this.screen.width/(this.gameObjects.scale/x),
+            y: this.screen.height/(this.gameObjects.scale/this.screen.aspectRatio/y),
+            w: this.screen.width/(this.gameObjects.scale/w),
+            h: this.screen.height/((this.gameObjects.scale/this.screen.aspectRatio)/h),
+        };
+    }
 
     // рисование фрейма
     render() {

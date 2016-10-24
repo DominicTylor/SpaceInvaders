@@ -3,7 +3,7 @@
  */
 
 // условная ширина для холста, нужна для масштабирования
-let SCALE = 1000;
+let SCALE = 700;
 
 import './style.less';
 
@@ -48,6 +48,28 @@ export default class Draw {
         });
     };
 
+    // создание пульки
+    initBullet (x, y, velocity, w, h, color) {
+        return {
+            x: x,
+            y: y,
+            velocity: velocity,
+            width: w,
+            height: h,
+            color: color,
+        }
+    };
+
+    // обновление положения пули
+    updateBullet(bullet) {
+        bullet.y += bullet.velocity;
+    };
+
+    // проверка на персечение осей двух объектов
+    AABBIntersect (ax, ay, aw, ah, bx, by, bw, bh) {
+        return ax < bx+bw && bx < ax+aw && ay < by+bh && by < ay+ah;
+    };
+
     // обновление положения для объектов и просчёт попаданий
     update () {
         this.frames++;
@@ -63,7 +85,61 @@ export default class Draw {
 
         // выстрелы
         if (this.controls.isPressed(32)) {
-            this.bullets.push(this.initBullet(this.tank.x + 10, this.tank.y, -8, 2, 6, "#fff"));
+            this.bullets.push(this.initBullet(this.tank.x + 10, this.tank.y, -3, 2, 6, '#fff'));
+        }
+
+        for (let i = 0, len = this.bullets.length; i < len; i++) {
+            let b = this.bullets[i];
+            this.updateBullet(b);
+
+            if (b.y + b.height < 0) {
+                this.bullets.splice(i, 1);
+                i--;
+                len--;
+                continue;
+            }
+
+            // попадания в пришельцев
+            for (var j = 0, len2 = this.aliens.length; j < len2; j++) {
+                var a = this.aliens[j];
+                if (this.AABBIntersect(b.x, b.y, b.width, b.height, a.x, a.y, a.w, a.h)) {
+                    this.aliens.splice(j, 1);
+                    j--;
+                    len2--;
+                    this.bullets.splice(i, 1);
+                    i--;
+                    len--;
+
+                    // изменение скорости движения пришельцев
+                    // при уменьшении их количества
+                    switch (len2) {
+                        case 40: {
+                            this.lvFrame = 44;
+                            break;
+                        }
+                        case 30: {
+                            this.lvFrame = 30;
+                            break;
+                        }
+                        case 20: {
+                            this.lvFrame = 24;
+                            break;
+                        }
+                        case 10: {
+                            this.lvFrame = 12;
+                            break;
+                        }
+                        case 5: {
+                            this.lvFrame = 6;
+                            break;
+                        }
+                        case 1: {
+                            this.lvFrame = 4;
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         // движения пришельцев
