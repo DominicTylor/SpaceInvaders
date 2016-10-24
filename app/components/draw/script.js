@@ -58,7 +58,7 @@ export default class Draw {
 
         this.context.save();
 
-        this.gameObjects.bullets.forEach((item) => {
+        this.gameObjects.bulletsT.concat(this.gameObjects.bulletsA).forEach((item) => {
             this.drawBullet(item);
         });
 
@@ -71,8 +71,10 @@ export default class Draw {
             this.drawText('Начать игру');
         } else if (status === 'pause') {
             this.drawText('Продолжить игру');
-        } else if (status === 'finish') {
+        } else if (status === 'lose') {
             this.drawText('Попробовать ещё раз');
+        } else if (status === 'win') {
+            this.drawText('Вы победили!');
         }
     };
 }

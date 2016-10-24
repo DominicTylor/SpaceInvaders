@@ -16,13 +16,19 @@ export default class Game {
                 this.status = 'run';
                 this.gameObjects.lose = false;
                 this.run();
-            } else if (this.status === 'finish') {
+            } else if (this.status === 'win' || this.status === 'lose') {
                 this.gameObjects.initGameObject();
                 this.status = 'run';
                 this.gameObjects.lose = false;
                 this.run();
             } else if (this.status === 'run') {
                 this.status = 'pause';
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if (this.status !== 'run') {
+                this.run();
             }
         });
     }
@@ -32,10 +38,12 @@ export default class Game {
     }
 
     loop () {
-        this.gameObjects.update();
+        if (this.status === 'run') {
+            this.gameObjects.update();
+        }
 
         if (this.gameObjects.lose) {
-            this.status = 'finish';
+            this.status = this.gameObjects.lose;
         }
 
         this.draw.render(this.status);

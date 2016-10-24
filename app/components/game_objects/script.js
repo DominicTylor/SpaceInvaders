@@ -30,8 +30,11 @@ export default class Draw {
             y: this.scale/this.screen.aspectRatio - (20 + this.sprite.taSprite.h),
         }
 
-        // массив для пуль
-        this.bullets = [];
+        // массив пуль танка
+        this.bulletsT = [];
+
+        // массив пуль пришельцев
+        this.bulletsA = [];
 
         // массив пришельцев
         this.aliens = [];
@@ -85,21 +88,21 @@ export default class Draw {
 
         // выстрелы
         if (this.controls.isPressed(32)) {
-            this.bullets.push(this.initBullet(this.tank.x + 10, this.tank.y-6, -3, 2, 6, '#fff'));
+            this.bulletsT.push(this.initBullet(this.tank.x + 10, this.tank.y-6, -3, 2, 6, '#fff'));
         }
 
-        for (let i = 0, len = this.bullets.length; i < len; i++) {
-            let b = this.bullets[i];
+        // попадания в танчик
+        for (let i = 0, len = this.bulletsA.length; i < len; i++) {
+            let b = this.bulletsA[i];
             this.updateBullet(b);
 
-            if (b.y + b.h < 0 || b.y > this.scale/this.screen.aspectRatio) {
-                this.bullets.splice(i, 1);
+            if (b.y > this.scale/this.screen.aspectRatio) {
+                this.bulletsA.splice(i, 1);
                 i--;
                 len--;
                 continue;
             }
 
-            // попадания в танчик
             if (this.AABBIntersect(
                     b.x, b.y, b.w, b.h,
                     this.tank.x,
@@ -107,21 +110,33 @@ export default class Draw {
                     this.tank.sprite.w,
                     this.tank.sprite.h,
                     )) {
-                this.lose = true;
-                this.bullets.splice(i, 1);
+                this.lose = 'lose';
+                this.bulletsA.splice(i, 1);
+                i--;
+                len--;
+                continue;
+            }
+        }
+
+        // попадания в пришельцев
+        for (let i = 0, len = this.bulletsT.length; i < len; i++) {
+            let b = this.bulletsT[i];
+            this.updateBullet(b);
+
+            if (b.y + b.h < 0) {
+                this.bulletsT.splice(i, 1);
                 i--;
                 len--;
                 continue;
             }
 
-            // попадания в пришельцев
             for (var j = 0, len2 = this.aliens.length; j < len2; j++) {
                 var a = this.aliens[j];
                 if (this.AABBIntersect(b.x, b.y, b.w, b.h, a.x, a.y, a.w, a.h)) {
                     this.aliens.splice(j, 1);
                     j--;
                     len2--;
-                    this.bullets.splice(i, 1);
+                    this.bulletsT.splice(i, 1);
                     i--;
                     len--;
 
@@ -157,23 +172,14 @@ export default class Draw {
             }
         }
 
-        // добавляем выстрелы пришельцов
-        if (Math.random() < 0.03 && this.aliens.length > 0) {
-            // выбираем произвольного пришельца
-            let a = this.aliens[Math.round(Math.random() * (this.aliens.length - 1))];
-            // проверяем чтоб выстрелы были только из первой линиии
-            // пробегаем по всему массиву и если есть совпадение по
-            // одной линии уходим на пришельца вниз
-            this.aliens.forEach((item) => {
-                if (this.AABBIntersect(a.x, a.y, a.w, 100, item.x, item.y, item.w, item.h)) {
-                    a = item;
-                }
-            });
-            this.bullets.push(this.initBullet(a.x + a.w*0.5, a.y + a.h, 3, 2, 4, "#fff"));
-        }
-
         // движения пришельцев
         if (this.frames % this.lvFrame === 0) {
+
+            if (!this.aliens.length) {
+                this.lose = 'win';
+                return;
+            }
+
             this.spFrame = (this.spFrame + 1) % 2;
             let _max = 0, _min = this.scale, _down = 20;
 
@@ -193,8 +199,23 @@ export default class Draw {
             }
 
             if (_down > this.tank.y) {
-                this.lose = true;
+                this.lose = 'lose';
             }
+        }
+
+        // добавляем выстрелы пришельцов
+        if (Math.random() < 0.03 && this.aliens.length > 0) {
+            // выбираем произвольного пришельца
+            let a = this.aliens[Math.round(Math.random() * (this.aliens.length - 1))];
+            // проверяем чтоб выстрелы были только из первой линиии
+            // пробегаем по всему массиву и если есть совпадение по
+            // одной линии уходим на пришельца вниз
+            this.aliens.forEach((item) => {
+                if (this.AABBIntersect(a.x, a.y, a.w, 100, item.x, item.y, item.w, item.h)) {
+                    a = item;
+                }
+            });
+            this.bulletsA.push(this.initBullet(a.x + a.w*0.5, a.y + a.h, 3, 2, 4, "#fff"));
         }
     };
 }
