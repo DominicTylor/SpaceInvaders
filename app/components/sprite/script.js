@@ -12,6 +12,7 @@ export default class Sprite {
         this.initSprite();
     };
 
+    // создаём спрайт для объектов
     initSprite () {
         this.alSprite = [
             [this.getSprite(0, 0, 22, 16), this.getSprite(0, 16, 22, 16)],

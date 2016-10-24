@@ -30,6 +30,7 @@ export default class Screen {
         });
     }
 
+    // масштабирование экрана
     setScreenSize () {
         this.windowWidth  = document.documentElement.clientWidth;
         this.windowHeight = document.documentElement.clientHeight;
@@ -46,6 +47,7 @@ export default class Screen {
         this.screen.style.width  = this.width + 'px';
     };
 
+    // очистка холста
     clear () {
         this.context.clearRect(0, 0, this.width, this.height);
     };
