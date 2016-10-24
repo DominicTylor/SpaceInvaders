@@ -21,18 +21,17 @@ import GameObjects from './components/game_objects/script.js';
 // Рисование
 import Draw from './components/draw/script.js';
 
+// Игра
+import Game from './components/game/script.js';
+
 // непосредственно жогово
 window.onload = function () {
     let screen      = new Screen(),
         controls    = new Controls(),
         sprite      = new Sprite(),
         gameObjects = new GameObjects(screen, sprite, controls),
-        draw        = new Draw(screen, gameObjects);
+        draw        = new Draw(screen, gameObjects),
+        game        = new Game(screen, gameObjects, draw);
 
-    let loop = function() {
-        gameObjects.update();
-        draw.render();
-        window.requestAnimationFrame(loop, screen.canvas);
-    };
-    window.requestAnimationFrame(loop, screen.canvas);
+    game.run();
 };

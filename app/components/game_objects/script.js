@@ -13,16 +13,16 @@ export default class Draw {
         this.controls = controls;
         this.screen   = screen;
         this.scale    = SCALE;
-        this.frames   = 0;
-        this.spFrame  = 0;
-        this.lvFrame  = 60;
-        this.dir      = 1;
 
         this.initGameObject();
     }
 
     // создаём игровые объекты
     initGameObject () {
+        this.frames   = 0;
+        this.spFrame  = 0;
+        this.lvFrame  = 60;
+        this.dir      = 1;
         // танчик
         this.tank = {
             sprite: this.sprite.taSprite,
@@ -49,20 +49,20 @@ export default class Draw {
     };
 
     // создание пульки
-    initBullet (x, y, velocity, w, h, color) {
+    initBullet (x, y, v, w, h, c) {
         return {
             x: x,
             y: y,
-            velocity: velocity,
-            width: w,
-            height: h,
-            color: color,
+            v: v,
+            w: w,
+            h: h,
+            c: c,
         }
     };
 
     // обновление положения пули
     updateBullet(bullet) {
-        bullet.y += bullet.velocity;
+        bullet.y += bullet.v;
     };
 
     // проверка на персечение осей двух объектов
@@ -85,14 +85,29 @@ export default class Draw {
 
         // выстрелы
         if (this.controls.isPressed(32)) {
-            this.bullets.push(this.initBullet(this.tank.x + 10, this.tank.y, -3, 2, 6, '#fff'));
+            this.bullets.push(this.initBullet(this.tank.x + 10, this.tank.y-6, -3, 2, 6, '#fff'));
         }
 
         for (let i = 0, len = this.bullets.length; i < len; i++) {
             let b = this.bullets[i];
             this.updateBullet(b);
 
-            if (b.y + b.height < 0 || b.y > this.scale/this.screen.aspectRatio) {
+            if (b.y + b.h < 0 || b.y > this.scale/this.screen.aspectRatio) {
+                this.bullets.splice(i, 1);
+                i--;
+                len--;
+                continue;
+            }
+
+            // попадания в танчик
+            if (this.AABBIntersect(
+                    b.x, b.y, b.w, b.h,
+                    this.tank.x,
+                    this.tank.y,
+                    this.tank.sprite.w,
+                    this.tank.sprite.h,
+                    )) {
+                this.lose = true;
                 this.bullets.splice(i, 1);
                 i--;
                 len--;
@@ -102,7 +117,7 @@ export default class Draw {
             // попадания в пришельцев
             for (var j = 0, len2 = this.aliens.length; j < len2; j++) {
                 var a = this.aliens[j];
-                if (this.AABBIntersect(b.x, b.y, b.width, b.height, a.x, a.y, a.w, a.h)) {
+                if (this.AABBIntersect(b.x, b.y, b.w, b.h, a.x, a.y, a.w, a.h)) {
                     this.aliens.splice(j, 1);
                     j--;
                     len2--;
@@ -160,12 +175,13 @@ export default class Draw {
         // движения пришельцев
         if (this.frames % this.lvFrame === 0) {
             this.spFrame = (this.spFrame + 1) % 2;
-            let _max = 0, _min = this.scale;
+            let _max = 0, _min = this.scale, _down = 20;
 
             this.aliens.forEach((item) => {
                 item.x += 20 * this.dir;
                 _max = Math.max(_max, item.x + item.w);
                 _min = Math.min(_min, item.x);
+                _down = Math.max(_down, item.y + item.h);
             });
 
             if (_max > this.scale - 20 || _min < 20) {
@@ -174,6 +190,10 @@ export default class Draw {
                     item.x += 20 * this.dir;
                     item.y += 20;
                 });
+            }
+
+            if (_down > this.tank.y) {
+                this.lose = true;
             }
         }
     };

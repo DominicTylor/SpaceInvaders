@@ -19,12 +19,25 @@ export default class Draw {
 
     // функция для отрисовки пульки
     drawBullet (bullet) {
-        this.context.fillStyle = bullet.color;
-        let item = this.scaleCoordinates(bullet.x, bullet.y, bullet.width, bullet.height);
+        this.context.fillStyle = bullet.c;
+        let item = this.scaleCoordinates(bullet.x, bullet.y, bullet.w, bullet.h);
         this.context.fillRect(item.x, item.y, item.w, item.h);
     }
 
-    // фукнкция пересчёта координат для текущего размера
+    // функция для отрисовки текста
+    drawText (text) {
+        this.context.save();
+
+        this.context.fillStyle = "#fff";
+        this.context.font = "30pt Helvetica";
+        this.context.textAlign = "center";
+        this.context.textBaseline = "middle";
+        this.context.fillText(text, this.screen.width/2, this.screen.height/2);
+
+        this.context.restore();
+    };
+
+    // функция пересчёта координат для текущего размера
     scaleCoordinates (x, y, w, h) {
         return {
             x: this.screen.width/(this.gameObjects.scale/x),
@@ -35,7 +48,7 @@ export default class Draw {
     }
 
     // рисование фрейма
-    render() {
+    render(status) {
 
         this.screen.clear();
 
@@ -51,6 +64,15 @@ export default class Draw {
 
         this.context.restore();
 
-        this.drawSprite(this.gameObjects.tank.sprite, this.gameObjects.tank.x, this.gameObjects.tank.y);
+        if (status !== 'finish') {
+            this.drawSprite(this.gameObjects.tank.sprite, this.gameObjects.tank.x, this.gameObjects.tank.y);
+        }
+        if (status === 'start') {
+            this.drawText('Начать игру');
+        } else if (status === 'pause') {
+            this.drawText('Продолжить игру');
+        } else if (status === 'finish') {
+            this.drawText('Попробовать ещё раз');
+        }
     };
 }
