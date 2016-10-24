@@ -64,8 +64,9 @@ export default class Draw {
 
         this.context.restore();
 
-        if (status !== 'finish') {
+        if (! (status == 'win' || status == 'lose')) {
             this.drawSprite(this.gameObjects.tank.sprite, this.gameObjects.tank.x, this.gameObjects.tank.y);
+            window.console.log(status);
         }
         if (status === 'start') {
             this.drawText('Начать игру');
