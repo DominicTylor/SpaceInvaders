@@ -55,6 +55,9 @@ export default class Draw {
                 });
             }
         });
+
+        // башни
+        cities = { };
     };
 
     // создание пульки
@@ -127,6 +130,7 @@ export default class Draw {
             let b = this.bulletsA[i];
             this.updateBullet(b);
 
+            // убираем вылетевшие за экран пульки
             if (b.y > this.scaleH) {
                 this.bulletsA.splice(i, 1);
                 i--;

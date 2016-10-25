@@ -14,12 +14,20 @@ export default class Sprite {
 
     // создаём спрайт для объектов
     initSprite () {
+        // пришельцы, в порядке увеличения очков за них,
+        // две версии, для 'движения'
+
         this.alSprite = [
             [this.getSprite(38, 0, 24, 16), this.getSprite(38, 16, 24, 16)],
             [this.getSprite(0, 0, 22, 16), this.getSprite(0, 16, 22, 16)],
             [this.getSprite(22, 0, 16, 16), this.getSprite(22, 16, 16, 16)]
         ];
+
+        // танчик
         this.taSprite = this.getSprite(62, 0, 22, 16);
+
+        // башня
+        this.ciSprite = this.getSprite(84, 8, 36, 24);
     };
 
     getSprite (x, y, w, h) {
