@@ -51,10 +51,20 @@ export default class Draw {
             item;
         while (life--) {
             item = this.scaleCoordinates(this.gameObjects.scaleW-itemOffset, 10, sp.w, sp.h);
-            this.context.drawImage(this.gameObjects.sprite.spriteImg, sp.x, sp.y, sp.w, sp.h, item.x, item.y, item.w, item.h);
+            this.context.drawImage(this.gameObjects.sprite.spriteImg,
+                sp.x, sp.y, sp.w, sp.h,
+                item.x, item.y, item.w, item.h);
             itemOffset += xOffset;
         }
     };
+
+    // башни
+    drawCities () {
+        let item = this.scaleCoordinates(0, this.gameObjects.cities.y, 1000, 100);
+        this.context.drawImage(this.gameObjects.cities.canvas,
+            0, this.gameObjects.cities.y, 1000, 100,
+            0, item.y, item.w, item.h);
+    }
 
     // функция пересчёта координат для текущего размера
     scaleCoordinates (x, y, w, h) {
@@ -69,12 +79,15 @@ export default class Draw {
     // рисование фрейма
     render(status) {
 
+        // очищаем
         this.screen.clear();
 
+        // пришельцы
         this.gameObjects.aliens.forEach((item) => {
             this.drawSprite(item.sprite[this.gameObjects.spFrame], item.x, item.y);
         });
 
+        // пульки
         this.context.save();
 
         this.gameObjects.bulletsT.concat(this.gameObjects.bulletsA).forEach((item) => {
@@ -83,6 +96,10 @@ export default class Draw {
 
         this.context.restore();
 
+        // башни
+        this.drawCities();
+
+        // танчик
         if (! (status == 'win' || status == 'lose')) {
             this.drawSprite(this.gameObjects.tank.sprite, this.gameObjects.tank.x, this.gameObjects.tank.y);
         }

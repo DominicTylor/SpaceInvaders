@@ -23,11 +23,11 @@ export default class Draw {
 
     // создаём игровые объекты
     initGameObject () {
-        this.frames    = 0;
-        this.spFrame   = 0;
-        this.lvFrame   = 60;
-        this.dir       = 1;
-        this.moveSound = 0;
+        this.frames       = 0;
+        this.spFrame      = 0;
+        this.lvFrame      = 60;
+        this.dir          = 1;
+
         // танчик
         this.tank = {
             sprite: this.sprite.taSprite,
@@ -57,7 +57,21 @@ export default class Draw {
         });
 
         // башни
-        cities = { };
+        this.cities = (() => {
+            let obj = {
+                    canvas: document.createElement("canvas"),
+                    y: this.tank.y - (30 + this.sprite.ciSprite.h),
+                };
+            obj.canvas.width = this.scaleW;
+            obj.canvas.height = this.scaleH;
+            obj.context = obj.canvas.getContext("2d");
+            for (var i = 0; i < 4; i++) {
+                obj.context.drawImage(this.sprite.spriteImg, this.sprite.ciSprite.x, this.sprite.ciSprite.y,
+                    this.sprite.ciSprite.w, this.sprite.ciSprite.h,
+                    this.scaleW/5*(i+1)-this.sprite.ciSprite.w/2, obj.y, this.sprite.ciSprite.w, this.sprite.ciSprite.h);
+            }
+            return obj;
+        })();
     };
 
     // создание пульки
@@ -82,7 +96,7 @@ export default class Draw {
         return ax < bx+bw && bx < ax+aw && ay < by+bh && by < ay+ah;
     };
 
-    // обновление очков и при достижении тысячи плюс одна жизнь
+    // обновление очков
     scoreUpdate(score) {
         this.score += score;
         if (this.score >= 1000) {
@@ -90,6 +104,7 @@ export default class Draw {
         }
     }
 
+    // обновление дополнительных жизней
     lifeUpdate(n = 0) {
         if (this.life < 3) {
             this.life += n;
@@ -105,6 +120,15 @@ export default class Draw {
             this.life = 0;
         }
     }
+
+    // создание повреждений
+    generateDamage () {
+
+    };
+
+    // проверка на прозрачность пиксела
+    // и создание повреждения
+    hits (x, y) {};
 
     // обновление положения для объектов и просчёт попаданий
     update () {
@@ -167,8 +191,8 @@ export default class Draw {
                 continue;
             }
 
-            for (var j = 0, len2 = this.aliens.length; j < len2; j++) {
-                var a = this.aliens[j];
+            for (let j = 0, len2 = this.aliens.length; j < len2; j++) {
+                let a = this.aliens[j];
                 if (this.AABBIntersect(b.x, b.y, b.w, b.h, a.x, a.y, a.w, a.h)) {
                     this.scoreUpdate(this.aliens[j].coast);
                     this.aliens.splice(j, 1);
@@ -210,6 +234,30 @@ export default class Draw {
                 }
             }
         }
+
+        // попадания в башни
+        /*for (let i = 0,
+                 len1 = this.bulletsA.length,
+                 concatArr = this.bulletsA.concat(this.bulletsT),
+                 len = concatArr.length,
+                 b = ''; i < len; i++) {
+            b = concatArr[i];
+            if (this.cities.y < b.y && b.y < this.cities.y + this.cities.h) {
+                if (this.hits(b.x, b.y)) {
+                    if (i < len1) {
+                        this.bulletsA.splice(i, 1);
+                        i--;
+                        len--;
+                    } else {
+                        this.bulletsT.splice(i-len1, 1);
+                        i--;
+                        len--;
+                    }
+                    continue;
+                }
+            }
+
+        }*/
 
         // движения пришельцев
         if (this.frames % this.lvFrame === 0) {
