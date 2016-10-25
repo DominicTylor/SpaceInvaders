@@ -12,9 +12,10 @@ export default class Draw {
         this.sprite   = sprite;
         this.controls = controls;
         this.screen   = screen;
-        this.scaleW    = SCALE;
-        this.scaleH    = SCALE/this.screen.aspectRatio;
+        this.scaleW   = SCALE;
+        this.scaleH   = SCALE/this.screen.aspectRatio;
         this.sounds   = sounds;
+        this.life     = 0;
         this.score    = 0;
 
         this.initGameObject();
@@ -82,8 +83,23 @@ export default class Draw {
     scoreUpdate(score) {
         this.score += score;
         if (this.score >= 1000) {
-            this.score -=1000;
-            window.console.log('Each dude! take one life!');
+            this.lifeUpdate();
+        }
+    }
+
+    lifeUpdate(n = 0) {
+        if (this.life < 3) {
+            this.life += n;
+        }
+
+        if (this.score >= 1000 && this.life < 3) {
+            this.life++;
+            this.score -= 1000;
+        }
+
+        if (!~this.life) {
+            this.lose = 'lose';
+            this.life = 0;
         }
     }
 
@@ -125,7 +141,7 @@ export default class Draw {
                     this.tank.sprite.w,
                     this.tank.sprite.h,
                     )) {
-                this.lose = 'lose';
+                this.lifeUpdate(-1);
                 this.bulletsA.splice(i, 1);
                 i--;
                 len--;
@@ -196,6 +212,7 @@ export default class Draw {
 
             if (!this.aliens.length) {
                 this.lose = 'win';
+                this.lifeUpdate(1);
                 return;
             }
 

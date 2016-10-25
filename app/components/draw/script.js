@@ -25,19 +25,35 @@ export default class Draw {
     }
 
     // функция для отрисовки текста
-    drawText (text, fontSize = 30, x = this.gameObjects.scaleW/2, y = this.gameObjects.scaleH/2) {
+    drawText (text, fontSize = 30, x = this.gameObjects.scaleW/2, y = this.gameObjects.scaleH/2, direction = 'center') {
         fontSize = this.screen.height/(this.gameObjects.scaleH/fontSize);
         x = this.screen.width/(this.gameObjects.scaleW/x);
         y = this.screen.height/(this.gameObjects.scaleH/y);
         this.context.save();
 
-        this.context.fillStyle = "#fff";
+        this.context.fillStyle = '#fff';
         this.context.font = `${fontSize}px Helvetica`;
-        this.context.textAlign = "center";
-        this.context.textBaseline = "middle";
+        this.context.textAlign = direction;
+        this.context.textBaseline = 'middle';
         this.context.fillText(text, x, y);
 
         this.context.restore();
+    };
+
+    // функция для отрисовки дополнительных жизней
+    drawLife (life) {
+        if (!life) {
+            return;
+        }
+        let sp = this.gameObjects.tank.sprite,
+            xOffset = 20+sp.w,
+            itemOffset = xOffset,
+            item;
+        while (life--) {
+            item = this.scaleCoordinates(this.gameObjects.scaleW-itemOffset, 10, sp.w, sp.h);
+            this.context.drawImage(this.gameObjects.sprite.spriteImg, sp.x, sp.y, sp.w, sp.h, item.x, item.y, item.w, item.h);
+            itemOffset += xOffset;
+        }
     };
 
     // функция пересчёта координат для текущего размера
@@ -72,7 +88,10 @@ export default class Draw {
         }
 
         // очки
-        this.drawText (this.gameObjects.score, 20, 20, 20);
+        this.drawText(this.gameObjects.score, 20, 20, 20, 'left');
+
+        // жизни
+        this.drawLife(this.gameObjects.life);
 
         // текст посередине
         switch (status) {
