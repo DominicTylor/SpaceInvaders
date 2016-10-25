@@ -22,7 +22,7 @@ export default class Draw {
         this.context.fillStyle = bullet.c;
         let item = this.scaleCoordinates(bullet.x, bullet.y, bullet.w, bullet.h);
         this.context.fillRect(item.x, item.y, item.w, item.h);
-    }
+    };
 
     // функция для отрисовки текста
     drawText (text, fontSize = 30, x = this.gameObjects.scaleW/2, y = this.gameObjects.scaleH/2, direction = 'center') {
@@ -60,11 +60,11 @@ export default class Draw {
 
     // башни
     drawCities () {
-        let item = this.scaleCoordinates(0, this.gameObjects.cities.y, 1000, 100);
+        let item = this.scaleCoordinates(0, this.gameObjects.cities.y, this.gameObjects.cities.w, this.gameObjects.cities.h);
         this.context.drawImage(this.gameObjects.cities.canvas,
-            0, this.gameObjects.cities.y, 1000, 100,
+            0, this.gameObjects.cities.y, this.gameObjects.cities.w, this.gameObjects.cities.h,
             0, item.y, item.w, item.h);
-    }
+    };
 
     // функция пересчёта координат для текущего размера
     scaleCoordinates (x, y, w, h) {
@@ -74,7 +74,7 @@ export default class Draw {
             w: this.screen.width/(this.gameObjects.scaleW/w),
             h: this.screen.height/((this.gameObjects.scaleH)/h),
         };
-    }
+    };
 
     // рисование фрейма
     render(status) {

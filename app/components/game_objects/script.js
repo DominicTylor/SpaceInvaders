@@ -61,6 +61,8 @@ export default class Draw {
             let obj = {
                     canvas: document.createElement("canvas"),
                     y: this.tank.y - (30 + this.sprite.ciSprite.h),
+                    w: this.scaleW,
+                    h: this.sprite.ciSprite.h,
                 };
             obj.canvas.width = this.scaleW;
             obj.canvas.height = this.scaleH;
@@ -122,13 +124,28 @@ export default class Draw {
     }
 
     // создание повреждений
-    generateDamage () {
-
+    generateDamage (x, y) {
+        let context = this.cities.context;
+        context.clearRect(x-2, y-2, 4, 4);
+        context.clearRect(x+2, y-4, 2, 4);
+        context.clearRect(x+4, y, 2, 2);
+        context.clearRect(x+2, y+2, 2, 2);
+        context.clearRect(x-4, y+2, 2, 2);
+        context.clearRect(x-6, y, 2, 2);
+        context.clearRect(x-4, y-4, 2, 2);
+        context.clearRect(x-2, y-6, 2, 2);
     };
 
     // проверка на прозрачность пиксела
     // и создание повреждения
-    hits (x, y) {};
+    hits (x, y) {
+        let data = this.cities.context.getImageData(x, y, 1, 1);
+        if (data.data[3] !== 0) {
+            this.generateDamage(x, y);
+            return true;
+        }
+        return false;
+    };
 
     // обновление положения для объектов и просчёт попаданий
     update () {
@@ -236,7 +253,7 @@ export default class Draw {
         }
 
         // попадания в башни
-        /*for (let i = 0,
+        for (let i = 0,
                  len1 = this.bulletsA.length,
                  concatArr = this.bulletsA.concat(this.bulletsT),
                  len = concatArr.length,
@@ -257,7 +274,7 @@ export default class Draw {
                 }
             }
 
-        }*/
+        }
 
         // движения пришельцев
         if (this.frames % this.lvFrame === 0) {
