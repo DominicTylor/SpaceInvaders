@@ -8,20 +8,12 @@ let SCALE = 700;
 import './style.less';
 
 export default class Draw {
-    constructor(screen, sprite, controls) {
+    constructor(screen, sprite, controls, sounds) {
         this.sprite   = sprite;
         this.controls = controls;
         this.screen   = screen;
         this.scale    = SCALE;
-        this.sounds   = {
-            explosion: document.getElementById('explosion'),
-            fastinvader1: document.getElementById('fastinvader1'),
-            fastinvader2: document.getElementById('fastinvader2'),
-            fastinvader3: document.getElementById('fastinvader3'),
-            fastinvader4: document.getElementById('fastinvader4'),
-            invaderkilled: document.getElementById('invaderkilled'),
-            shoot: document.getElementById('shoot'),
-        }
+        this.sounds   = sounds;
 
         this.initGameObject();
     }
@@ -99,7 +91,7 @@ export default class Draw {
         // выстрелы
         if (this.controls.isPressed(32)) {
             this.bulletsT.push(this.initBullet(this.tank.x + 10, this.tank.y-6, -3, 2, 6, '#fff'));
-            this.sounds.shoot.play();
+            this.sounds.playSound('shoot');
         }
 
         // попадания в танчик
@@ -125,7 +117,7 @@ export default class Draw {
                 this.bulletsA.splice(i, 1);
                 i--;
                 len--;
-                this.sounds.explosion.play();
+                this.sounds.playSound('explosion');
                 continue;
             }
         }
@@ -151,7 +143,7 @@ export default class Draw {
                     this.bulletsT.splice(i, 1);
                     i--;
                     len--;
-                    this.sounds.invaderkilled.play();
+                    this.sounds.playSound('invaderkilled');
 
                     // изменение скорости движения пришельцев
                     // при уменьшении их количества
@@ -211,11 +203,7 @@ export default class Draw {
                 });
             }
 
-            if (++this.moveSound>4) {
-                this.moveSound = 1
-            }
-
-            this.sounds['fastinvader'+this.moveSound].play();
+            this.sounds.playSound('fastinvader');
 
             if (_down > this.tank.y) {
                 this.lose = 'lose';
@@ -235,7 +223,7 @@ export default class Draw {
                 }
             });
             this.bulletsA.push(this.initBullet(a.x + a.w*0.5, a.y + a.h, 3, 2, 4, "#fff"));
-            this.sounds.shoot.play();
+            this.sounds.playSound('shoot');
         }
     };
 }

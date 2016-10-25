@@ -21,6 +21,9 @@ import GameObjects from './components/game_objects/script.js';
 // Рисование
 import Draw from './components/draw/script.js';
 
+// Звуки
+import Sounds from './components/sounds/script.js';
+
 // Игра
 import Game from './components/game/script.js';
 
@@ -29,7 +32,8 @@ window.onload = function () {
     let screen      = new Screen(),
         controls    = new Controls(),
         sprite      = new Sprite(),
-        gameObjects = new GameObjects(screen, sprite, controls),
+        sounds      = new Sounds(),
+        gameObjects = new GameObjects(screen, sprite, controls, sounds),
         draw        = new Draw(screen, gameObjects),
         game        = new Game(screen, gameObjects, draw);
 
