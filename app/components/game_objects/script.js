@@ -59,15 +59,15 @@ export default class Draw {
         // башни
         this.cities = (() => {
             let obj = {
-                    canvas: document.createElement("canvas"),
+                    canvas: document.createElement('canvas'),
                     y: this.tank.y - (30 + this.sprite.ciSprite.h),
                     w: this.scaleW,
                     h: this.sprite.ciSprite.h,
                 };
             obj.canvas.width = this.scaleW;
             obj.canvas.height = this.scaleH;
-            obj.context = obj.canvas.getContext("2d");
-            for (var i = 0; i < 4; i++) {
+            obj.context = obj.canvas.getContext('2d');
+            for (let i = 0; i < 4; i++) {
                 obj.context.drawImage(this.sprite.spriteImg, this.sprite.ciSprite.x, this.sprite.ciSprite.y,
                     this.sprite.ciSprite.w, this.sprite.ciSprite.h,
                     this.scaleW/5*(i+1)-this.sprite.ciSprite.w/2, obj.y, this.sprite.ciSprite.w, this.sprite.ciSprite.h);

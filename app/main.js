@@ -29,13 +29,16 @@ import Game from './components/game/script.js';
 
 // непосредственно жогово
 window.onload = function () {
-    let screen      = new Screen(),
+    let sprite      = new Sprite(),
+        screen      = new Screen(),
         controls    = new Controls(),
-        sprite      = new Sprite(),
-        sounds      = new Sounds(),
-        gameObjects = new GameObjects(screen, sprite, controls, sounds),
-        draw        = new Draw(screen, gameObjects),
-        game        = new Game(screen, gameObjects, draw);
+        sounds      = new Sounds();
 
-    game.run();
+    sprite.spriteImg.onload = function () {
+        sprite.initSprite();
+        let gameObjects = new GameObjects(screen, sprite, controls, sounds),
+            draw        = new Draw(screen, gameObjects),
+            game        = new Game(screen, gameObjects, draw);
+        game.run();
+    }
 };
