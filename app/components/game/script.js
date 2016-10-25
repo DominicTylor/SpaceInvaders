@@ -34,10 +34,6 @@ export default class Game {
     }
 
     run () {
-        window.requestAnimationFrame(this.loop.bind(this));
-    }
-
-    loop () {
         if (this.status === 'run') {
             this.gameObjects.update();
         }
@@ -48,7 +44,7 @@ export default class Game {
 
         this.draw.render(this.status);
         if (this.status === 'run') {
-            window.requestAnimationFrame(this.loop.bind(this));
+            window.requestAnimationFrame(this.run.bind(this));
         }
     };
 }

@@ -12,8 +12,10 @@ export default class Draw {
         this.sprite   = sprite;
         this.controls = controls;
         this.screen   = screen;
-        this.scale    = SCALE;
+        this.scaleW    = SCALE;
+        this.scaleH    = SCALE/this.screen.aspectRatio;
         this.sounds   = sounds;
+        this.score    = 0;
 
         this.initGameObject();
     }
@@ -28,8 +30,8 @@ export default class Draw {
         // танчик
         this.tank = {
             sprite: this.sprite.taSprite,
-            x: (this.scale - this.sprite.taSprite.w) / 2,
-            y: this.scale/this.screen.aspectRatio - (20 + this.sprite.taSprite.h),
+            x: (this.scaleW- this.sprite.taSprite.w) / 2,
+            y: this.scaleH - (20 + this.sprite.taSprite.h),
         }
 
         // массив пуль танка
@@ -40,14 +42,15 @@ export default class Draw {
 
         // массив пришельцев
         this.aliens = [];
-        [1, 0, 0, 2, 2].forEach((item, i) => {
+        [2, 1, 1, 0, 0].forEach((item, i) => {
             for (let j = 0; j < 10; j++) {
                 this.aliens.push({
                     sprite: this.sprite.alSprite[item],
-                    x: 20 + j*30 + [0, 4, 0][item],
-                    y: 20 + i*30,
+                    x: 20 + j*30 + [0, 0, 4][item],
+                    y: 40 + i*30,
                     w: this.sprite.alSprite[item][0].w,
-                    h: this.sprite.alSprite[item][0].h
+                    h: this.sprite.alSprite[item][0].h,
+                    coast: (item+1)*10,
                 });
             }
         });
@@ -75,6 +78,15 @@ export default class Draw {
         return ax < bx+bw && bx < ax+aw && ay < by+bh && by < ay+ah;
     };
 
+    // обновление очков и при достижении тысячи плюс одна жизнь
+    scoreUpdate(score) {
+        this.score += score;
+        if (this.score >= 1000) {
+            this.score -=1000;
+            window.console.log('Each dude! take one life!');
+        }
+    }
+
     // обновление положения для объектов и просчёт попаданий
     update () {
         this.frames++;
@@ -86,7 +98,7 @@ export default class Draw {
         if (this.controls.isDown(39)) {
             this.tank.x += 6;
         }
-        this.tank.x = Math.max(Math.min(this.tank.x, this.scale - (20 + this.sprite.taSprite.w)), 20);
+        this.tank.x = Math.max(Math.min(this.tank.x, this.scaleW- (20 + this.sprite.taSprite.w)), 20);
 
         // выстрелы
         if (this.controls.isPressed(32)) {
@@ -99,7 +111,7 @@ export default class Draw {
             let b = this.bulletsA[i];
             this.updateBullet(b);
 
-            if (b.y > this.scale/this.screen.aspectRatio) {
+            if (b.y > this.scaleH) {
                 this.bulletsA.splice(i, 1);
                 i--;
                 len--;
@@ -127,6 +139,7 @@ export default class Draw {
             let b = this.bulletsT[i];
             this.updateBullet(b);
 
+            // убираем вылетевшие за экран пульки
             if (b.y + b.h < 0) {
                 this.bulletsT.splice(i, 1);
                 i--;
@@ -137,6 +150,7 @@ export default class Draw {
             for (var j = 0, len2 = this.aliens.length; j < len2; j++) {
                 var a = this.aliens[j];
                 if (this.AABBIntersect(b.x, b.y, b.w, b.h, a.x, a.y, a.w, a.h)) {
+                    this.scoreUpdate(this.aliens[j].coast);
                     this.aliens.splice(j, 1);
                     j--;
                     len2--;
@@ -186,7 +200,7 @@ export default class Draw {
             }
 
             this.spFrame = (this.spFrame + 1) % 2;
-            let _max = 0, _min = this.scale, _down = 20;
+            let _max = 0, _min = this.scaleW, _down = 20;
 
             this.aliens.forEach((item) => {
                 item.x += 20 * this.dir;
@@ -195,7 +209,7 @@ export default class Draw {
                 _down = Math.max(_down, item.y + item.h);
             });
 
-            if (_max > this.scale - 20 || _min < 20) {
+            if (_max > this.scaleW- 20 || _min < 20) {
                 this.dir *= -1;
                 this.aliens.forEach((item) => {
                     item.x += 20 * this.dir;

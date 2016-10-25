@@ -25,14 +25,17 @@ export default class Draw {
     }
 
     // функция для отрисовки текста
-    drawText (text) {
+    drawText (text, fontSize = 30, x = this.gameObjects.scaleW/2, y = this.gameObjects.scaleH/2) {
+        fontSize = this.screen.height/(this.gameObjects.scaleH/fontSize);
+        x = this.screen.width/(this.gameObjects.scaleW/x);
+        y = this.screen.height/(this.gameObjects.scaleH/y);
         this.context.save();
 
         this.context.fillStyle = "#fff";
-        this.context.font = "30pt Helvetica";
+        this.context.font = `${fontSize}px Helvetica`;
         this.context.textAlign = "center";
         this.context.textBaseline = "middle";
-        this.context.fillText(text, this.screen.width/2, this.screen.height/2);
+        this.context.fillText(text, x, y);
 
         this.context.restore();
     };
@@ -40,10 +43,10 @@ export default class Draw {
     // функция пересчёта координат для текущего размера
     scaleCoordinates (x, y, w, h) {
         return {
-            x: this.screen.width/(this.gameObjects.scale/x),
-            y: this.screen.height/(this.gameObjects.scale/this.screen.aspectRatio/y),
-            w: this.screen.width/(this.gameObjects.scale/w),
-            h: this.screen.height/((this.gameObjects.scale/this.screen.aspectRatio)/h),
+            x: this.screen.width/(this.gameObjects.scaleW/x),
+            y: this.screen.height/(this.gameObjects.scaleH/y),
+            w: this.screen.width/(this.gameObjects.scaleW/w),
+            h: this.screen.height/((this.gameObjects.scaleH)/h),
         };
     }
 
@@ -66,16 +69,29 @@ export default class Draw {
 
         if (! (status == 'win' || status == 'lose')) {
             this.drawSprite(this.gameObjects.tank.sprite, this.gameObjects.tank.x, this.gameObjects.tank.y);
-            window.console.log(status);
         }
-        if (status === 'start') {
-            this.drawText('Начать игру');
-        } else if (status === 'pause') {
-            this.drawText('Продолжить игру');
-        } else if (status === 'lose') {
-            this.drawText('Попробовать ещё раз');
-        } else if (status === 'win') {
-            this.drawText('Вы победили!');
+
+        // очки
+        this.drawText (this.gameObjects.score, 20, 20, 20);
+
+        // текст посередине
+        switch (status) {
+            case 'start': {
+                this.drawText('Начать игру');
+                break;
+            }
+            case 'pause': {
+                this.drawText('Продолжить игру');
+                break;
+            }
+            case 'lose': {
+                this.drawText('Попробовать ещё раз');
+                break;
+            }
+            case 'win': {
+                this.drawText('Вы победили!');
+                break;
+            }
         }
     };
 }
