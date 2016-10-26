@@ -5,8 +5,6 @@
 // условная ширина для холста, нужна для масштабирования
 let SCALE = 700;
 
-import './style.less';
-
 export default class Draw {
     constructor(screen, sprite, controls, sounds) {
         this.sprite   = sprite;

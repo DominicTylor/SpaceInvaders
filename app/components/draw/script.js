@@ -2,8 +2,6 @@
  * Created by Владимир on 22.10.2016.
  */
 
-import './style.less';
-
 export default class Draw {
     constructor(screen, gameObjects) {
         this.gameObjects = gameObjects;

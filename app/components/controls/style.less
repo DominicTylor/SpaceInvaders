@@ -1,0 +1,40 @@
+.mobile {
+    &__button {
+        position: absolute;
+        z-index: 2;
+        opacity: .3;
+        border-radius: 50%;
+        color: #fff;
+        text-align: center;
+        box-sizing: border-box;
+        cursor: pointer;
+        width: 60px;
+        height: 60px;
+        bottom: 20px;
+
+        &--launch {
+            background: #bf0505;
+            left: 20px;
+            font-size: 34px;
+            padding-top: 10px;
+        }
+
+        &--move-left, &--move-right {
+            background: #0e3e66;
+            font-size: 28px;
+            padding-top: 14px;
+        }
+        &--move-left {
+            right: 90px;
+            padding-right: 4px;
+        }
+        &--move-right {
+            right: 20px;
+            padding-left: 4px;
+        }
+
+        &.active {
+            opacity: .55;
+        }
+    }
+}
