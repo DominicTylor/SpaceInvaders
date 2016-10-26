@@ -60,10 +60,11 @@ export default class Draw {
 
     // башни
     drawCities () {
-        let item = this.scaleCoordinates(0, this.gameObjects.cities.y, this.gameObjects.cities.w, this.gameObjects.cities.h);
-        this.context.drawImage(this.gameObjects.cities.canvas,
-            0, this.gameObjects.cities.y, this.gameObjects.cities.w, this.gameObjects.cities.h,
-            0, item.y, item.w, item.h);
+        let cities = this.gameObjects.cities,
+            item = this.scaleCoordinates(cities.x, cities.y, cities.w, cities.h);
+        this.context.drawImage(cities.canvas,
+            0, 0, cities.w, cities.h,
+            item.x, item.y, item.w, item.h);
     };
 
     // функция пересчёта координат для текущего размера

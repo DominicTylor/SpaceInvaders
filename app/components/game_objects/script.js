@@ -60,17 +60,18 @@ export default class Draw {
         this.cities = (() => {
             let obj = {
                     canvas: document.createElement('canvas'),
+                    x: this.scaleW/5-this.sprite.ciSprite.w/2,
                     y: this.tank.y - (30 + this.sprite.ciSprite.h),
-                    w: this.scaleW,
+                    w: this.scaleW/5*3+this.sprite.ciSprite.w,
                     h: this.sprite.ciSprite.h,
                 };
-            obj.canvas.width = this.scaleW;
-            obj.canvas.height = this.scaleH;
+            obj.canvas.width = obj.w;
+            obj.canvas.height = obj.h;
             obj.context = obj.canvas.getContext('2d');
             for (let i = 0; i < 4; i++) {
                 obj.context.drawImage(this.sprite.spriteImg, this.sprite.ciSprite.x, this.sprite.ciSprite.y,
                     this.sprite.ciSprite.w, this.sprite.ciSprite.h,
-                    this.scaleW/5*(i+1)-this.sprite.ciSprite.w/2, obj.y, this.sprite.ciSprite.w, this.sprite.ciSprite.h);
+                    this.scaleW/5*i, 0, this.sprite.ciSprite.w, this.sprite.ciSprite.h);
             }
             return obj;
         })();
@@ -120,6 +121,7 @@ export default class Draw {
         if (!~this.life) {
             this.lose = 'lose';
             this.life = 0;
+            this.score = 0;
         }
     }
 
@@ -139,6 +141,8 @@ export default class Draw {
     // проверка на прозрачность пиксела
     // и создание повреждения
     hits (x, y) {
+        x = x - this.cities.x,
+        y = y - this.cities.y;
         let data = this.cities.context.getImageData(x, y, 1, 1);
         if (data.data[3] !== 0) {
             this.generateDamage(x, y);
@@ -307,6 +311,7 @@ export default class Draw {
 
             if (_down > this.tank.y) {
                 this.lose = 'lose';
+                this.score = 0;
             }
         }
 
