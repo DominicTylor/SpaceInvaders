@@ -107,7 +107,7 @@ export default class Draw {
 
     // обновление дополнительных жизней
     lifeUpdate(n = 0) {
-        if (this.life < 3) {
+        if (this.life < 3 || n <0) {
             this.life += n;
         }
 
@@ -309,6 +309,7 @@ export default class Draw {
 
             if (_down > this.tank.y) {
                 this.lose = 'lose';
+                this.life = 0;
                 this.score = 0;
             }
         }

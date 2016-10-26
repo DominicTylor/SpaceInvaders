@@ -99,7 +99,7 @@ export default class Draw {
         this.drawCities();
 
         // танчик
-        if (! (status == 'win' || status == 'lose')) {
+        if (status !== 'lose') {
             this.drawSprite(this.gameObjects.tank.sprite, this.gameObjects.tank.x, this.gameObjects.tank.y);
         }
 
