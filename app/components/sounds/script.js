@@ -27,6 +27,8 @@ export default class Sounds {
         let audio = document.createElement('audio');
         audio.src = (`${folder}/${fileName}.${format}`);
         this.soundWrapper.appendChild(audio);
+        audio.preload = 'auto';
+        audio.load();
         return audio;
     }
 
