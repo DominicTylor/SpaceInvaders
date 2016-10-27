@@ -9,6 +9,8 @@ export default class Game {
         this.draw = draw;
         this.status = 'start';
 
+        this.run = this.run.bind(this);
+
         this.screen.screen.addEventListener('click', () => {
             if (this.status === 'start' || this.status === 'pause') {
                 this.status = 'run';
@@ -42,7 +44,7 @@ export default class Game {
 
         this.draw.render(this.status);
         if (this.status === 'run') {
-            window.requestAnimationFrame(this.run.bind(this));
+            window.requestAnimationFrame(this.run);
         }
     };
 }
