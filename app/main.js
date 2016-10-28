@@ -28,17 +28,17 @@ import Sounds from './components/sounds/script.js';
 import Game from './components/game/script.js';
 
 // непосредственно жогово
-window.onload = function () {
-    let sprite      = new Sprite(),
-        screen      = new Screen(),
-        controls    = new Controls(),
-        sounds      = new Sounds();
+document.addEventListener('DOMContentLoaded', function () {
+    let sprite   = new Sprite(),
+        screen   = new Screen(),
+        controls = new Controls(),
+        sounds   = new Sounds();
 
-    sprite.spriteImg.onload = function () {
+    sprite.spriteImg.addEventListener('load', function () {
         sprite.initSprite();
         let gameObjects = new GameObjects(screen, sprite, controls, sounds),
             draw        = new Draw(screen, gameObjects),
             game        = new Game(screen, gameObjects, draw);
         game.run();
-    }
-};
+    });
+});

@@ -47,6 +47,7 @@ export default class Draw {
             xOffset = 20+sp.w,
             itemOffset = xOffset,
             item;
+
         while (life--) {
             item = this.scaleCoordinates(this.gameObjects.scaleW-itemOffset, 10, sp.w, sp.h);
             this.context.drawImage(this.gameObjects.sprite.spriteImg,
@@ -77,7 +78,6 @@ export default class Draw {
 
     // рисование фрейма
     render(status) {
-
         // очищаем
         this.screen.clear();
 

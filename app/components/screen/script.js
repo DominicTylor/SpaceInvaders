@@ -12,8 +12,8 @@ const MAX_WIDTH           = 1000;
 export default class Screen {
     constructor() {
         this.aspectRatio = SCREEN_ASPECT_RATIO;
-        this.screen = document.createElement('div');
-        this.canvas = document.createElement('canvas');
+        this.screen      = document.createElement('div');
+        this.canvas      = document.createElement('canvas');
 
         this.setScreenSize();
 
@@ -34,12 +34,12 @@ export default class Screen {
     setScreenSize () {
         this.windowWidth  = document.documentElement.clientWidth;
         this.windowHeight = document.documentElement.clientHeight;
-        this.width        = this.windowWidth*0.98>MAX_WIDTH ? MAX_WIDTH : this.windowWidth*0.98;
-        this.height       = this.width/SCREEN_ASPECT_RATIO;
+        this.width        = this.windowWidth * 0.98 > MAX_WIDTH ? MAX_WIDTH : this.windowWidth * 0.98;
+        this.height       = this.width / SCREEN_ASPECT_RATIO;
 
         if (this.height > this.windowHeight * 0.98) {
-            this.height  = this.windowHeight * 0.98;
-            this.width = this.windowHeight * 0.98 * SCREEN_ASPECT_RATIO;
+            this.height = this.windowHeight * 0.98;
+            this.width  = this.windowHeight * 0.98 * SCREEN_ASPECT_RATIO;
         }
         this.canvas.width        = this.width;
         this.canvas.height       = this.height;

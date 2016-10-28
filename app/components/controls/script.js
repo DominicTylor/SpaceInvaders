@@ -12,17 +12,17 @@ export default class Controls {
     constructor() {
         this.down    = {};
         this.pressed = {};
+        this.mobile  = false;
 
-        document.addEventListener('keydown', (e) => {
-            this.down[e.keyCode] = true;
+        document.addEventListener('keydown', e => {
+            this.pushButton(e, e.keyCode);
         });
-
-        document.addEventListener('keyup', (e) => {
-            delete this.down[e.keyCode];
-            delete this.pressed[e.keyCode];
+        document.addEventListener('keyup', e => {
+            this.unpushButton(e, e.keyCode);
         });
 
         if ('ontouchstart' in document.documentElement) {
+            this.mobile = true;
             this.mobileInit();
         }
     }
@@ -63,43 +63,40 @@ export default class Controls {
         }
 
         // стрельба на touch устройствах
-        this.buttonLaunch.addEventListener('touchstart', (event) => {
-            this.pushMobileButton(event, 32);
-        });
-        this.buttonLaunch.addEventListener('touchend', (event) => {
-            this.unpushMobileButton(event, 32);
+        this.buttonLaunch.addEventListener('touchstart', e  => {
+            this.pushButton(e, 32);
+        }).addEventListener('touchend', e => {
+            this.unpushButton(e, 32);
         });
 
 
         // движение влево на touch устройствах
-        this.buttonLeftMove.addEventListener('touchstart', (event) => {
-            this.pushMobileButton(event, 37);
-        });
-        this.buttonLeftMove.addEventListener('touchend', (event) => {
-            this.unpushMobileButton(event, 37);
+        this.buttonLeftMove.addEventListener('touchstart', e => {
+            this.pushButton(e, 37);
+        }).addEventListener('touchend', e => {
+            this.unpushButton(e, 37);
         });
 
         // движение вправо на touch устройствах
-        this.buttonRightMove.addEventListener('touchstart', (event) => {
-            this.pushMobileButton(event, 39);
-        });
-        this.buttonRightMove.addEventListener('touchend', (event) => {
-            this.unpushMobileButton(event, 39);
+        this.buttonRightMove.addEventListener('touchstart', e => {
+            this.pushButton(e, 39);
+        }).buttonRightMove.addEventListener('touchend', e => {
+            this.unpushButton(e, 39);
         });
     }
 
-    pushMobileButton (event, keyCode) {
-        event.preventDefault();
-        event.stopPropagation();
+    pushButton (event, keyCode) {
         this.down[keyCode] = true;
-        event.target.classList.add('active');
+        if (this.mobile) {
+            event.target.classList.add('active');
+        }
     }
 
-    unpushMobileButton (event, keyCode) {
-        event.preventDefault();
-        event.stopPropagation();
+    unpushButton (event, keyCode) {
         delete this.down[keyCode];
         delete this.pressed[keyCode];
-        event.target.classList.remove('active');
+        if (this.mobile) {
+            event.target.classList.remove('active');
+        }
     }
 }

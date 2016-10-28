@@ -10,10 +10,7 @@ export default class Sprite {
 
     getSprite (x, y, w, h) {
         return {
-            x: x,
-            y: y,
-            w: w,
-            h: h,
+            x, y, w, h,
         };
     };
 
@@ -24,7 +21,7 @@ export default class Sprite {
 
         this.alSprite = [
             [this.getSprite(38, 0, 24, 16), this.getSprite(38, 16, 24, 16)],
-            [this.getSprite(0, 0, 22, 16), this.getSprite(0, 16, 22, 16)],
+            [this.getSprite(0, 0, 22, 16),  this.getSprite(0, 16, 22, 16) ],
             [this.getSprite(22, 0, 16, 16), this.getSprite(22, 16, 16, 16)]
         ];
 

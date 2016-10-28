@@ -21,15 +21,15 @@ export default class Draw {
 
     // создаём игровые объекты
     initGameObject () {
-        this.frames       = 0;
-        this.spFrame      = 0;
-        this.lvFrame      = 60;
-        this.dir          = 1;
+        this.frames  = 0;
+        this.spFrame = 0;
+        this.lvFrame = 54;
+        this.dir     = 1;
 
         // танчик
         this.tank = {
             sprite: this.sprite.taSprite,
-            x: (this.scaleW- this.sprite.taSprite.w) / 2,
+            x: (this.scaleW - this.sprite.taSprite.w) / 2,
             y: this.scaleH - (20 + this.sprite.taSprite.h),
         }
 
@@ -49,7 +49,7 @@ export default class Draw {
                     y: 40 + i*30,
                     w: this.sprite.alSprite[item][0].w,
                     h: this.sprite.alSprite[item][0].h,
-                    coast: (item+1)*10,
+                    coast: (item + 1) * 10,
                 });
             }
         });
@@ -58,18 +58,18 @@ export default class Draw {
         this.cities = (() => {
             let obj = {
                     canvas: document.createElement('canvas'),
-                    x: this.scaleW/5-this.sprite.ciSprite.w/2,
+                    x: this.scaleW / 5 - this.sprite.ciSprite.w / 2,
                     y: this.tank.y - (30 + this.sprite.ciSprite.h),
-                    w: this.scaleW/5*3+this.sprite.ciSprite.w,
+                    w: this.scaleW / 5 * 3 + this.sprite.ciSprite.w,
                     h: this.sprite.ciSprite.h,
                 };
-            obj.canvas.width = obj.w;
+            obj.canvas.width  = obj.w;
             obj.canvas.height = obj.h;
-            obj.context = obj.canvas.getContext('2d');
+            obj.context       = obj.canvas.getContext('2d');
             for (let i = 0; i < 4; i++) {
                 obj.context.drawImage(this.sprite.spriteImg, this.sprite.ciSprite.x, this.sprite.ciSprite.y,
                     this.sprite.ciSprite.w, this.sprite.ciSprite.h,
-                    this.scaleW/5*i, 0, this.sprite.ciSprite.w, this.sprite.ciSprite.h);
+                    this.scaleW / 5 * i, 0, this.sprite.ciSprite.w, this.sprite.ciSprite.h);
             }
             return obj;
         })();
@@ -78,12 +78,7 @@ export default class Draw {
     // создание пульки
     initBullet (x, y, v, w, h, c) {
         return {
-            x: x,
-            y: y,
-            v: v,
-            w: w,
-            h: h,
-            c: c,
+            x, y, v, w, h, c,
         }
     };
 
@@ -117,8 +112,8 @@ export default class Draw {
         }
 
         if (!~this.life) {
-            this.lose = 'lose';
-            this.life = 0;
+            this.lose  = 'lose';
+            this.life  = 0;
             this.score = 0;
         }
     }
@@ -139,8 +134,8 @@ export default class Draw {
     // проверка на прозрачность пиксела
     // и создание повреждения
     hits (x, y) {
-        x = x - this.cities.x,
-        y = y - this.cities.y;
+        x -= this.cities.x,
+        y -= this.cities.y;
         let data = this.cities.context.getImageData(x, y, 1, 1);
         if (data.data[3] !== 0) {
             this.generateDamage(x, y);
@@ -164,7 +159,7 @@ export default class Draw {
 
         // выстрелы
         if (this.controls.isPressed(32)) {
-            this.bulletsT.push(this.initBullet(this.tank.x + 10, this.tank.y-6, -3, 2, 6, '#fff'));
+            this.bulletsT.push(this.initBullet(this.tank.x + 10, this.tank.y - 6, -3, 2, 6, '#fff'));
             this.sounds.playSound('shoot');
         }
 
@@ -226,27 +221,27 @@ export default class Draw {
                     // при уменьшении их количества
                     switch (len2) {
                         case 40: {
-                            this.lvFrame = 40;
+                            this.lvFrame = 46;
                             break;
                         }
                         case 30: {
-                            this.lvFrame = 28;
+                            this.lvFrame = 38;
                             break;
                         }
                         case 20: {
-                            this.lvFrame = 20;
+                            this.lvFrame = 30;
                             break;
                         }
                         case 10: {
-                            this.lvFrame = 12;
+                            this.lvFrame = 20;
                             break;
                         }
                         case 5: {
-                            this.lvFrame = 6;
+                            this.lvFrame = 12;
                             break;
                         }
                         case 1: {
-                            this.lvFrame = 4;
+                            this.lvFrame = 6;
                             break;
                         }
                     }
@@ -321,12 +316,12 @@ export default class Draw {
             // проверяем чтоб выстрелы были только из первой линиии
             // пробегаем по всему массиву и если есть совпадение по
             // одной линии уходим на пришельца вниз
-            this.aliens.forEach((item) => {
+            this.aliens.forEach( item => {
                 if (this.AABBIntersect(a.x, a.y, a.w, 100, item.x, item.y, item.w, item.h)) {
                     a = item;
                 }
             });
-            this.bulletsA.push(this.initBullet(a.x + a.w*0.5, a.y + a.h, 3, 2, 4, "#fff"));
+            this.bulletsA.push(this.initBullet(a.x + a.w * 0.5, a.y + a.h, 3, 2, 4, "#fff"));
             this.sounds.playSound('shoot');
         }
     };

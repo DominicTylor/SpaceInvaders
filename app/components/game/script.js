@@ -4,10 +4,10 @@
 
 export default class Game {
     constructor(screen, gameObjects, draw) {
-        this.screen = screen;
+        this.screen      = screen;
         this.gameObjects = gameObjects;
-        this.draw = draw;
-        this.status = 'start';
+        this.draw        = draw;
+        this.status      = 'start';
 
         this.run = this.run.bind(this);
 
