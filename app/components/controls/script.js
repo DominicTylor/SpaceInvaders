@@ -65,7 +65,8 @@ export default class Controls {
         // стрельба на touch устройствах
         this.buttonLaunch.addEventListener('touchstart', e  => {
             this.pushButton(e, 32);
-        }).addEventListener('touchend', e => {
+        });
+        this.buttonLaunch.addEventListener('touchend', e => {
             this.unpushButton(e, 32);
         });
 
@@ -73,14 +74,16 @@ export default class Controls {
         // движение влево на touch устройствах
         this.buttonLeftMove.addEventListener('touchstart', e => {
             this.pushButton(e, 37);
-        }).addEventListener('touchend', e => {
+        });
+        this.buttonLeftMove.addEventListener('touchend', e => {
             this.unpushButton(e, 37);
         });
 
         // движение вправо на touch устройствах
         this.buttonRightMove.addEventListener('touchstart', e => {
             this.pushButton(e, 39);
-        }).buttonRightMove.addEventListener('touchend', e => {
+        });
+        this.buttonRightMove.addEventListener('touchend', e => {
             this.unpushButton(e, 39);
         });
     }
