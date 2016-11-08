@@ -1,8 +1,8 @@
-#Space Inviders
+#Space Invaders
 
 [посмотреть на хостинге](https://project.someonedev.ru/spaceInviders/)
 
-Space Inviders на js.  
+Space Invaders на js.  
 Стрелять - пробел, двигаться стрелки влево-вправо.
 
 Less, ES6, сборка webpack.  
