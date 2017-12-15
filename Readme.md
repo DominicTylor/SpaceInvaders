@@ -1,6 +1,6 @@
 #Space Invaders
 
-[посмотреть на хостинге](https://project.someonedev.ru/spaceInvaders/)
+[посмотреть на хостинге](http://project.someonedev.ru/spaceInvaders/)
 
 Space Invaders на js.  
 Стрелять - пробел, двигаться стрелки влево-вправо.
